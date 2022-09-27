@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float turnSpeed = 20f;
+    public float movementSpeed = 2f;
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
@@ -48,9 +49,17 @@ public class PlayerMovement : MonoBehaviour
         m_Rotation = Quaternion.LookRotation (desiredForward);
     }
 
+    private void Update()
+    {
+        if      (Input.GetKey(KeyCode.LeftControl)) movementSpeed = 4f;
+        else if (Input.GetKey(KeyCode.LeftShift))   movementSpeed = .5f;
+        else movementSpeed = 1f;
+        
+    }
+
     void OnAnimatorMove ()
     {
-        m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude);
+        m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude * movementSpeed);
         m_Rigidbody.MoveRotation (m_Rotation);
     }
 }
