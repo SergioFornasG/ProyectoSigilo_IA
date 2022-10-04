@@ -5,7 +5,7 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
 
-public String state;
+public string state;
 public bool seeked;
     // Start is called before the first frame update
     void Start()
@@ -19,36 +19,36 @@ public bool seeked;
     {
         switch (state)
     {
-        case == "patrol":
-            Console.WriteLine("Patrullando /estado = " + state);
+        case "patrol":
+            Debug.Log("Patrullando /estado = " + state);
             //follow patrol
             //oye ruido
 
             break;
 
-        case == "seek":
-            Console.WriteLine("Buscando /estado = " + state);
+        case "seek":
+            Debug.Log("Buscando /estado = " + state);
             //seek character
             if(seeked == true){
-                state == "pursuit";
+                state = "pursuit";
             }
             break;
 
-        case == "pursuit":
-            Console.WriteLine("Persiguiendo /estado = " + state);
+        case  "pursuit":
+            Debug.Log("Persiguiendo /estado = " + state);
             //pursuit character
             break;
         
-        case == "alerting":
-            Console.WriteLine("Alertando /estado = " + state);
+        case  "alerting":
+            Debug.Log("Alertando /estado = " + state);
             //alerta nodos(waypoints) conectados a este
             if(seeked == false){
-                state == "return";
+                state = "return";
             }
             break;
         
-        case == "return":
-            Console.WriteLine("Volviendo patrulla /estado = " + state);
+        case "return":
+            Debug.Log("Volviendo patrulla /estado = " + state);
             
             //
             //state = "patrol";
