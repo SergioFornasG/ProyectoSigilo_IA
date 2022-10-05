@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovementHide : MonoBehaviour
 {
     public float turnSpeed = 20f;
     public float movementSpeed = 2f;

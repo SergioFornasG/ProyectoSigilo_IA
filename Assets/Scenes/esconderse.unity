@@ -124,6 +124,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 1c17d1473df9595419b9463f0b7cdec9, type: 2}
+--- !u!1 &40177801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3674741054291970189, guid: 549c69af39b84624b8a053537c407def,
+    type: 3}
+  m_PrefabInstance: {fileID: 3674741052492913269}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &40177803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40177801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59622c68dc9f89c4d87709e41a0b56ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &50719414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1248,6 +1266,25 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1025471251 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3674741053506672997, guid: 549c69af39b84624b8a053537c407def,
+    type: 3}
+  m_PrefabInstance: {fileID: 3674741052492913269}
+  m_PrefabAsset: {fileID: 0}
+--- !u!65 &1025471253
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1025471251}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 10, y: 2.220446e-16, z: 10}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1407275730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2223,6 +2260,21 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 3674741052458455943, guid: 549c69af39b84624b8a053537c407def,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bedroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 3674741052720880610, guid: 549c69af39b84624b8a053537c407def,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bedroom
+      objectReference: {fileID: 0}
+    - target: {fileID: 3674741053506672997, guid: 549c69af39b84624b8a053537c407def,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bedroom
+      objectReference: {fileID: 0}
     - target: {fileID: 3674741053973066913, guid: 549c69af39b84624b8a053537c407def,
         type: 3}
       propertyPath: m_RootOrder
@@ -2282,6 +2334,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Level
+      objectReference: {fileID: 0}
+    - target: {fileID: 3674741054234270124, guid: 549c69af39b84624b8a053537c407def,
+        type: 3}
+      propertyPath: m_TagString
+      value: Bedroom
       objectReference: {fileID: 0}
     - target: {fileID: 3674741054517766396, guid: 549c69af39b84624b8a053537c407def,
         type: 3}
