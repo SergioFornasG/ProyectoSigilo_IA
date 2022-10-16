@@ -10,12 +10,14 @@ public LayerMask Ghost;
 public string state;
 public bool seeked;
 public StateMachine s1;
-public bool check =  false;
+//public bool check =  false;
     // Start is called before the first frame update
     void Start()
     {
         state = "patrol";
         seeked = false;
+        /*Debug.Log(message:
+        ManagerAlert.Instance.setalert(seeked));*/
     }
 
     // Update is called once per frame
@@ -55,29 +57,28 @@ public bool check =  false;
         case "return":
             //Debug.Log("Volviendo patrulla /estado = " + state);
             
-            //
+            
             //state = "patrol";
             break;
-
-/*
+        /*
         default:
-            Console.WriteLine($"Measured value is {measurement}.");
             break;*/
     }
     }
     public void alert(){
-        if(check == true){
-        ghostInsideZone = Physics.OverlapSphere(transform.position, 30,Ghost);
+        //if(check == true){
+        ghostInsideZone = Physics.OverlapSphere(transform.position, 5,Ghost);
+        //Debug.Log(ghostInsideZone = Physics.OverlapSphere(transform.position, 30,Ghost));
 
         foreach(var ghost in ghostInsideZone)
         {
-            //s1 = ghost.GetComponent<StateMachine>();
-                //s1.state = "pursuit";
-            ghost.GetComponent<StateMachine>().setalert();
-            Debug.Log("Alerttt");
+            Debug.Log("alerted " + ghost );
+            //Debug.Log(ghostInsideZone);
+            
+            Debug.Log(ManagerAlert.Instance.setalert(seeked));
 
         }
-        }
+        //}
     }
     public void setalert(){
         seeked = true;
