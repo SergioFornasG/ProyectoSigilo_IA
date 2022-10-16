@@ -5,8 +5,12 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
 
+Collider[] ghostInsideZone;
+public LayerMask Ghost;
 public string state;
 public bool seeked;
+public StateMachine s1;
+public bool check =  false;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +33,7 @@ public bool seeked;
         case "seek":
             Debug.Log("Buscando /estado = " + state);
             //seek character
+            alert();
             if(seeked == true){
                 state = "pursuit";
             }
@@ -59,5 +64,18 @@ public bool seeked;
             Console.WriteLine($"Measured value is {measurement}.");
             break;*/
     }
+    }
+    public void alert(){
+        if(check == true){
+        ghostInsideZone = Physics.OverlapSphere(transform.position, 30,Ghost);
+
+        foreach(var ghost in ghostInsideZone)
+        {
+            s1 = ghost.GetComponent<StateMachine>();
+                s1.state = "pursuit";
+                Debug.Log(s1.state);
+
+        }
+        }
     }
 }
