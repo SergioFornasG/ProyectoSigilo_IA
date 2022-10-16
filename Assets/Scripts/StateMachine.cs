@@ -24,14 +24,14 @@ public bool check =  false;
         switch (state)
     {
         case "patrol":
-            Debug.Log("Patrullando /estado = " + state);
+            //Debug.Log("Patrullando /estado = " + state);
             //follow patrol
             //oye ruido
 
             break;
 
         case "seek":
-            Debug.Log("Buscando /estado = " + state);
+            //Debug.Log("Buscando /estado = " + state);
             //seek character
             alert();
             if(seeked == true){
@@ -40,12 +40,12 @@ public bool check =  false;
             break;
 
         case  "pursuit":
-            Debug.Log("Persiguiendo /estado = " + state);
+            //Debug.Log("Persiguiendo /estado = " + state);
             //pursuit character
             break;
         
         case  "alerting":
-            Debug.Log("Alertando /estado = " + state);
+            //Debug.Log("Alertando /estado = " + state);
             //alerta nodos(waypoints) conectados a este
             if(seeked == false){
                 state = "return";
@@ -53,7 +53,7 @@ public bool check =  false;
             break;
         
         case "return":
-            Debug.Log("Volviendo patrulla /estado = " + state);
+            //Debug.Log("Volviendo patrulla /estado = " + state);
             
             //
             //state = "patrol";
@@ -71,11 +71,15 @@ public bool check =  false;
 
         foreach(var ghost in ghostInsideZone)
         {
-            s1 = ghost.GetComponent<StateMachine>();
-                s1.state = "pursuit";
-                Debug.Log(s1.state);
+            //s1 = ghost.GetComponent<StateMachine>();
+                //s1.state = "pursuit";
+            ghost.GetComponent<StateMachine>().setalert();
+            Debug.Log("Alerttt");
 
         }
         }
+    }
+    public void setalert(){
+        seeked = true;
     }
 }
