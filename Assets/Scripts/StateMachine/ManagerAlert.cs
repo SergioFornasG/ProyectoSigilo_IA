@@ -8,7 +8,7 @@ public class ManagerAlert : MonoBehaviour
     private GameObject Ghost1;
     private GameObject Ghost2;
     private GameObject Ghost3;
-
+    public bool seeked; 
     private void Awake() => Instance = this;
 
 
@@ -24,7 +24,8 @@ public class ManagerAlert : MonoBehaviour
     }
 
 
-    public void setalert(){
-    //         Ghost1.GetComponent<StateMachine>;
-    }
+    /*public void setalert(seeked){
+            seeked = Ghost1.GetComponent<StateMachine>();
+            
+    }*/
 }

@@ -11,7 +11,7 @@ public string state;
 public bool seeked;
 public StateMachine s1;
 //public bool check =  false;
-    // Start is called before the first frame update
+    
     void Start()
     {
         state = "patrol";
@@ -20,7 +20,7 @@ public StateMachine s1;
         ManagerAlert.Instance.setalert(seeked));*/
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         switch (state)
@@ -35,29 +35,28 @@ public StateMachine s1;
         case "seek":
             //Debug.Log("Buscando /estado = " + state);
             //seek character
-            alert();
             if(seeked == true){
-                state = "pursuit";
+                state = "alerting";
             }
+            break;
+
+        case  "alerting":
+            //Debug.Log("Alertando /estado = " + state);
+            alert();
+            state = "pursuit";
             break;
 
         case  "pursuit":
             //Debug.Log("Persiguiendo /estado = " + state);
             //pursuit character
-            break;
-        
-        case  "alerting":
-            //Debug.Log("Alertando /estado = " + state);
-            //alerta nodos(waypoints) conectados a este
+
             if(seeked == false){
-                state = "return";
+                
             }
             break;
         
         case "return":
             //Debug.Log("Volviendo patrulla /estado = " + state);
-            
-            
             //state = "patrol";
             break;
         /*
@@ -75,7 +74,7 @@ public StateMachine s1;
             Debug.Log("alerted " + ghost );
             //Debug.Log(ghostInsideZone);
             
-            Debug.Log(ManagerAlert.Instance.setalert(seeked));
+            //Debug.Log(ManagerAlert.Instance.setalert(seeked));
 
         }
         //}
