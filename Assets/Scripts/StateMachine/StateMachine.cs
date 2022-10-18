@@ -5,15 +5,15 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
 
-Collider[] ghostInsideZone;
-public LayerMask Ghost;
+//Collider[] ghostInsideZone;
+//public LayerMask Ghost;
 public string state;
 public bool seeked;
-public StateMachine s1;
-//public bool check =  false;
+Collider g_Collider;
     
     void Start()
     {
+        g_Collider = GetComponent<Collider>();
         state = "patrol";
         seeked = false;
         /*Debug.Log(message:
@@ -51,11 +51,12 @@ public StateMachine s1;
             //pursuit character
 
             if(seeked == false){
-                
+                g_Collider.enabled = false;
             }
             break;
         
         case "return":
+
             //Debug.Log("Volviendo patrulla /estado = " + state);
             //state = "patrol";
             break;
@@ -65,7 +66,11 @@ public StateMachine s1;
     }
     }
     public void alert(){
-        //if(check == true){
+        //enable collider
+        
+            g_Collider.enabled = true;
+        
+        /*
         ghostInsideZone = Physics.OverlapSphere(transform.position, 5,Ghost);
         //Debug.Log(ghostInsideZone = Physics.OverlapSphere(transform.position, 30,Ghost));
 
@@ -73,13 +78,21 @@ public StateMachine s1;
         {
             Debug.Log("alerted " + ghost );
             //Debug.Log(ghostInsideZone);
-            
+            //ManagerAlert.Instance.setalert(seeked);
             //Debug.Log(ManagerAlert.Instance.setalert(seeked));
 
         }
-        //}
+        */
     }
-    public void setalert(){
+    /*public void setalert(){
         seeked = true;
+    }*/
+    private void OnTriggerEnter(Collider Ghost)
+    {
+        if(seeked == false){
+        if (Ghost.gameObject.tag == "Ghost") {
+             seeked = true;
+        }
+    }
     }
 }
