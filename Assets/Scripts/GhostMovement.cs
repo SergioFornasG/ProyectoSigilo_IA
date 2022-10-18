@@ -8,7 +8,6 @@ public class GhostMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float turnSpeed;
-    private bool _isRotating;
     private List<GameObject> _tempList;
     
     private Rigidbody _rigidbody;
@@ -16,28 +15,57 @@ public class GhostMovement : MonoBehaviour
     private GameObject _previousWaypoint;
     private GraphPathing _graphPathing;   //Se hara un getComponent mas tarde en el Update cuando se cambie a un nuevo waypoint
 
+    //TEST
+    [SerializeField] private GameObject originalWaypoint;
+    [SerializeField] private GameObject destinationWaypoint;
+    private List<GameObject> list;
+    public bool isAlert;
+    public bool isPatrolling;
+    private bool _isPathReadyToCalculate;
+    private int _currentWaypointIndex;
+    //TEST
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _graphPathing = waypointTarget.GetComponent<GraphPathing>();
-        _isRotating = false;
+        _isPathReadyToCalculate = true;
+        _currentWaypointIndex = 0;
     }
 
     private void Update()
     {
-        CalculatePatrolPathing();
+        if (isPatrolling)
+            CalculatePatrolPathing();
+        else if (!isPatrolling && _isPathReadyToCalculate)   //Solo una vez cuando cambia de patrullando a alerta, asi que calcule el camino
+        {
+            list = Pathfinding.Instance.FindPath(waypointTarget, destinationWaypoint);
+            _isPathReadyToCalculate = false;
+        }
+        else if (isAlert)
+        {
+            CalculateAlertPathing();
+        }
     }
 
     private void FixedUpdate()  //En FixedUpdate ya que son movimientos causados por las fisicas
     {
-        PatrolMovement();
+        if (isPatrolling || isAlert)
+            PatrolMovement();
     }
 
+    private void CalculateAlertPathing()
+    {
+        if (_currentWaypointIndex != list.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
+        {
+            waypointTarget = list[_currentWaypointIndex];
+            _currentWaypointIndex++;
+        }
+        DesiredRotation();
+    }
     private void CalculatePatrolPathing()
     {
         if (Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f) //Cuando llegue a un waypoint
         {
-            _isRotating = true;
             _previousWaypoint = waypointTarget; //Guarda el waypoint en el que esta para luego poder borrarlo del siguiente y no aparezca como una opcion en el random
 
             if (_graphPathing.arcosDeSalida.Count == 1) //Es == 1 cuando es el ultimo nodo de un recorrido
@@ -52,22 +80,8 @@ public class GhostMovement : MonoBehaviour
             }
             _graphPathing = waypointTarget.GetComponent<GraphPathing>();
             _graphPathing.arcoDeEntrada.Add(_previousWaypoint); //Justo despues de cambiar al graphPathing del siguiente waypoint, se le añade como arcoDeEntrada aquel del cual vienes
-            
-            Invoke(nameof(RotationFinished), 1f);   //Invoke para que se espere un segundo mientras esta girando, antes de reanudar el movimiento
         }
-
-        if (_isRotating) 
-        {
-            var relativePosition = waypointTarget.transform.position - transform.position;
-            var rotation = Quaternion.LookRotation(relativePosition);   //El objetivo al cual querrá mirar el fantasma
-            var currentRotation = transform.localRotation;
-            transform.localRotation = Quaternion.Slerp(currentRotation, rotation, Time.deltaTime * turnSpeed);  //Slerp interpola (esféricamente) para crear un rotación fluida
-        }
-    }
-
-    private void RotationFinished()
-    {
-        _isRotating = false;
+        DesiredRotation();
     }
 
     private void PatrolMovement()
@@ -76,8 +90,11 @@ public class GhostMovement : MonoBehaviour
         _rigidbody.MovePosition(transform.position + transform.forward * (speed * Time.fixedDeltaTime));
     }
 
-    private static float ManhattanDistance(Vector3 a, Vector3 b)
+    private void DesiredRotation()
     {
-        return Mathf.Abs(a.x - b.x) + Mathf.Abs(a.y - b.y) + Mathf.Abs(a.z - b.z);
+        var relativePosition = waypointTarget.transform.position - transform.position;
+        var rotation = Quaternion.LookRotation(relativePosition);   //El objetivo al cual querrá mirar el fantasma
+        var currentRotation = transform.localRotation;
+        transform.localRotation = Quaternion.Slerp(currentRotation, rotation, Time.deltaTime * turnSpeed);  //Slerp interpola (esféricamente) para crear un rotación fluida
     }
 }

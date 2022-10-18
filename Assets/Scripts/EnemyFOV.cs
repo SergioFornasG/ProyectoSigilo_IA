@@ -185,3 +185,12 @@ public class EnemyFOV : MonoBehaviour
         }
     }
 }
+/*private bool OpenNodesContains(List<Node> openNodes, Node node)
+    {
+        foreach (var iterationNode in openNodes)
+        {
+            if (iterationNode.thisWaypoint == node.thisWaypoint)
+                return true;
+        }
+        return false;
+    }*/
