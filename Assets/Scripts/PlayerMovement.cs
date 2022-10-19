@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public enum State { Run, Walk, Stealth };
     public float turnSpeed = 20f;
     public float movementSpeed = 2f;
+    public State playerState = State.Walk;
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
@@ -51,9 +53,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if      (Input.GetKey(KeyCode.LeftControl)) movementSpeed = 4f;
-        else if (Input.GetKey(KeyCode.LeftShift))   movementSpeed = .5f;
-        else movementSpeed = 1f;
+        if (Input.GetKey(KeyCode.LeftControl))
+        {
+            playerState = State.Run;
+            movementSpeed = 4f;
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            playerState = State.Stealth;
+            movementSpeed = .5f;
+        }
+        else
+        {
+            playerState = State.Walk;
+            movementSpeed = 1f;
+        }
         
     }
 
