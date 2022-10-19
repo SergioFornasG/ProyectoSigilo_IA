@@ -106,7 +106,7 @@ public class Pathfinding : MonoBehaviour
     {
         var neighbors = new List<Node>();
         var graphPathing = currentNode.thisWaypoint.GetComponent<GraphPathing>();
-        foreach (var arc in graphPathing.arcosDeSalida)
+        foreach (var arc in graphPathing.neighbors)
         {
             var node = new Node(arc);
             neighbors.Add(node);

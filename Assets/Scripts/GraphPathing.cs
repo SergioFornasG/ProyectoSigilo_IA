@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,15 +7,11 @@ public class GraphPathing : MonoBehaviour
 {
     public List<GameObject> arcosDeSalida;
     public List<GameObject> arcoDeEntrada;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<GameObject> neighbors;
+    private bool _isPositionAssigned;
 
-    // Update is called once per frame
-    void Update()
+    private void Start()
     {
-        
+        _isPositionAssigned = false;
     }
 }

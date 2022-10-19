@@ -12,17 +12,19 @@ public class GhostMovement : MonoBehaviour
     
     private Rigidbody _rigidbody;
     [SerializeField] private GameObject waypointTarget;
+    private GameObject _lastPatrolWaypoint;
     private GameObject _previousWaypoint;
     private GraphPathing _graphPathing;   //Se hara un getComponent mas tarde en el Update cuando se cambie a un nuevo waypoint
 
     //TEST
-    [SerializeField] private GameObject originalWaypoint;
     [SerializeField] private GameObject destinationWaypoint;
     private List<GameObject> list;
     public bool isAlert;
     public bool isPatrolling;
+    public bool isReturningToPatrol;
     private bool _isPathReadyToCalculate;
     private int _currentWaypointIndex;
+    private bool _isAlertPathReached;
     //TEST
     private void Start()
     {
@@ -36,20 +38,44 @@ public class GhostMovement : MonoBehaviour
     {
         if (isPatrolling)
             CalculatePatrolPathing();
-        else if (!isPatrolling && _isPathReadyToCalculate)   //Solo una vez cuando cambia de patrullando a alerta, asi que calcule el camino
+        else if (isAlert && _isPathReadyToCalculate)   //Solo una vez cuando cambia de patrullando a alerta, asi que calcule el camino
         {
+            _lastPatrolWaypoint = waypointTarget;   //Guarda ultimo waypoint de la patrulla para que puede volver alli cuando termine de estar alerta
+            _currentWaypointIndex = 0;
             list = Pathfinding.Instance.FindPath(waypointTarget, destinationWaypoint);
+            for (int i = 0; i < list.Count; i++)
+            {
+                Debug.Log(list[i]);
+            }
+            _isAlertPathReached = false;
             _isPathReadyToCalculate = false;
+        }
+        else if (!_isPathReadyToCalculate && !isAlert)
+        {
+            _currentWaypointIndex = 0;
+            list = Pathfinding.Instance.FindPath(waypointTarget, _lastPatrolWaypoint);
+            for (int i = 0; i < list.Count; i++)
+            {
+                Debug.Log(list[i]);
+            }
+
+            speed = 2;
+            Debug.Log("speed2");
+            _isPathReadyToCalculate = true;
         }
         else if (isAlert)
         {
             CalculateAlertPathing();
         }
+        else if (isReturningToPatrol)
+        {
+            CalculateReturnToPathing();
+        }
     }
 
     private void FixedUpdate()  //En FixedUpdate ya que son movimientos causados por las fisicas
     {
-        if (isPatrolling || isAlert)
+        if (isPatrolling || isAlert || isReturningToPatrol)
             PatrolMovement();
     }
 
@@ -60,8 +86,40 @@ public class GhostMovement : MonoBehaviour
             waypointTarget = list[_currentWaypointIndex];
             _currentWaypointIndex++;
         }
+
+        if (_currentWaypointIndex == list.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f && !_isAlertPathReached)
+        {
+            _isAlertPathReached = true;
+            Debug.Log("speed0");
+            speed = 0;
+            if (isReturningToPatrol)
+            {
+                isPatrolling = true;
+                isReturningToPatrol = false;
+            }
+        }
         DesiredRotation();
     }
+
+    private void CalculateReturnToPathing()
+    {
+        if (_currentWaypointIndex != list.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
+        {
+            waypointTarget = list[_currentWaypointIndex];
+            _currentWaypointIndex++;
+        }
+
+        if (_currentWaypointIndex == list.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
+        {
+            if (isReturningToPatrol)
+            {
+                isPatrolling = true;
+                isReturningToPatrol = false;
+            }
+        }
+        DesiredRotation();
+    }
+    
     private void CalculatePatrolPathing()
     {
         if (Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f) //Cuando llegue a un waypoint
