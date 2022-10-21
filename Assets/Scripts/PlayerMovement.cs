@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public float turnSpeed = 20f;
     public float movementSpeed = 2f;
     public State playerState = State.Walk;
+    public bool isHiding = false;
 
     Animator m_Animator;
     Rigidbody m_Rigidbody;
@@ -75,5 +76,10 @@ public class PlayerMovement : MonoBehaviour
     {
         m_Rigidbody.MovePosition (m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude * movementSpeed);
         m_Rigidbody.MoveRotation (m_Rotation);
+    }
+
+    public void changeHide()
+    {
+        isHiding = !isHiding;
     }
 }

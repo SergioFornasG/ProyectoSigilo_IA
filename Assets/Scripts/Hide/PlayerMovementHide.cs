@@ -56,9 +56,6 @@ public class PlayerMovementHide : MonoBehaviour
         else if (Input.GetKey(KeyCode.LeftShift)) movementSpeed = .5f;
         else movementSpeed = 1f;
 
-
-
-
     }
 
     void OnAnimatorMove()
