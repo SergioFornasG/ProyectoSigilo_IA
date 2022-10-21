@@ -65,7 +65,7 @@ public class StateMachine : MonoBehaviour
             break;*/
     }
     }
-    public void alert(Transform waypointDestination){
+    public void alert(Collider waypointDestination){
         //enable collider
         
             //g_Collider.enabled = true;
@@ -73,18 +73,20 @@ public class StateMachine : MonoBehaviour
         
         ghostInsideZone = Physics.OverlapSphere(transform.position, 50,Ghost);
         //Debug.Log(ghostInsideZone = Physics.OverlapSphere(transform.position, 30,Ghost));
-
-        foreach(var ghost in ghostInsideZone)
+        if(ghostInsideZone.Length >= 1)
         {
-            var gameObject = new GameObject();
-            var movement = ghost.GetComponent<GhostMovement>();
-            //Pasar el waypoint a los nuevos fantasmas 
-            //Debug.Log(ghostInsideZone);
-            //ManagerAlert.Instance.setalert(seeked);
-            //Debug.Log(ManagerAlert.Instance.setalert(seeked));
+            foreach (var ghost in ghostInsideZone)
+            {
 
+                var movement = ghost.GetComponent<GhostMovement>();
+                if(movement != null) movement.setDestinationWaypoint(waypointDestination);
+                //Pasar el waypoint a los nuevos fantasmas 
+                //Debug.Log(ghostInsideZone);
+                //ManagerAlert.Instance.setalert(seeked);
+                //Debug.Log(ManagerAlert.Instance.setalert(seeked));
+
+            }
         }
-        
     }
     /*public void setalert(){
         seeked = true;

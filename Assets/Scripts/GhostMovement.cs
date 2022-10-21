@@ -16,13 +16,8 @@ public class GhostMovement : MonoBehaviour
     private GraphPathing _graphPathing;   //Se hara un getComponent mas tarde en el Update cuando se cambie a un nuevo waypoint
 
     //TEST
-<<<<<<< Updated upstream
-    public GameObject destinationWaypoint;
-    private List<GameObject> list;
-=======
-    [SerializeField] private Collider destinationWaypoint;
+    public Collider destinationWaypoint;
     private List<Collider> list;
->>>>>>> Stashed changes
     public bool isAlert;
     public bool isPatrolling;
     public bool isReturningToPatrol;
@@ -161,5 +156,10 @@ public class GhostMovement : MonoBehaviour
         var rotation = Quaternion.LookRotation(relativePosition);   //El objetivo al cual querrá mirar el fantasma
         var currentRotation = transform.localRotation;
         transform.localRotation = Quaternion.Slerp(currentRotation, rotation, Time.deltaTime * turnSpeed);  //Slerp interpola (esféricamente) para crear un rotación fluida
+    }
+
+    public void setDestinationWaypoint(Collider wp)
+    {
+        this.destinationWaypoint = wp;
     }
 }

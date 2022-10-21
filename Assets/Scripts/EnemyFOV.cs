@@ -60,7 +60,7 @@ public class EnemyFOV : MonoBehaviour
                 {
                     var waypointAlert = Physics.OverlapSphere(transform.position, alertRadius, waypointMask);
                     var minDist = 999f;
-                    var waypointTarget = transform;
+                    Collider waypointTarget = new Collider();
                     for(int i = 0; i < waypointAlert.Length; i++)
                     {
 
@@ -68,11 +68,11 @@ public class EnemyFOV : MonoBehaviour
                         if (aux < minDist)
                         {
                             minDist = aux;
-                            waypointTarget = waypointAlert[i].transform;
+                            waypointTarget = waypointAlert[i];
                         }
                     }
-                    Debug.Log("waypoint: " + waypointTarget.position.x +" "+waypointTarget.position.z);
-                    //stateMachine.alert(waypointTarget);
+                    //Debug.Log("waypoint: " + waypointTarget.position.x +" "+waypointTarget.position.z);
+                    stateMachine.alert(waypointTarget);
                     
 
                 }
