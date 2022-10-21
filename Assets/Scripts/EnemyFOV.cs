@@ -10,6 +10,7 @@ public class EnemyFOV : MonoBehaviour
     public float visionAngle;
     public LayerMask playerMask;
     public LayerMask wallMask;
+    public GameObject zonaDeteccion;
     
     public float meshResolution;    //Numero de rayos casteados
     public MeshFilter viewMeshFilter;
@@ -52,7 +53,7 @@ public class EnemyFOV : MonoBehaviour
             {
                 var distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-                if (!Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, wallMask)) //Rayo lanzados desde enemigo hasta jugador, comprueba si hay o no pared en medio
+                if (zonaDeteccion.activeSelf && !Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, wallMask)) //Rayo lanzados desde enemigo hasta jugador, comprueba si hay o no pared en medio
                     Debug.Log("uwu");
             }
         }
