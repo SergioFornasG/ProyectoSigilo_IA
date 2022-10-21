@@ -5,16 +5,16 @@ using UnityEngine;
 public class StateMachine : MonoBehaviour
 {
 
-//Collider[] ghostInsideZone;
-//public LayerMask Ghost;
-public string state;
-public bool seeked;
-Collider g_Collider;
+    Collider[] ghostInsideZone;
+    public LayerMask Ghost;
+    public string state = "patrol";
+    public bool seeked; // true si persigue al jugador
+    //public Collider g_Collider;
     
     void Start()
     {
-        g_Collider = GetComponent<Collider>();
-        state = "patrol";
+        //g_Collider = GetComponent<Collider>();
+        //state = "patrol";
         seeked = false;
         /*Debug.Log(message:
         ManagerAlert.Instance.setalert(seeked));*/
@@ -42,7 +42,7 @@ Collider g_Collider;
 
         case  "alerting":
             //Debug.Log("Alertando /estado = " + state);
-            alert();
+            //alert();
             state = "pursuit";
             break;
 
@@ -51,7 +51,7 @@ Collider g_Collider;
             //pursuit character
 
             if(seeked == false){
-                g_Collider.enabled = false;
+               // g_Collider.enabled = false;
             }
             break;
         
@@ -65,28 +65,38 @@ Collider g_Collider;
             break;*/
     }
     }
-    public void alert(){
+    public void alert(Transform waypointDestination){
         //enable collider
         
-            g_Collider.enabled = true;
+            //g_Collider.enabled = true;
         
-        /*
-        ghostInsideZone = Physics.OverlapSphere(transform.position, 5,Ghost);
+        
+        ghostInsideZone = Physics.OverlapSphere(transform.position, 50,Ghost);
         //Debug.Log(ghostInsideZone = Physics.OverlapSphere(transform.position, 30,Ghost));
 
         foreach(var ghost in ghostInsideZone)
         {
-            Debug.Log("alerted " + ghost );
+            var gameObject = new GameObject();
+            var movement = ghost.GetComponent<GhostMovement>();
+            //Pasar el waypoint a los nuevos fantasmas 
             //Debug.Log(ghostInsideZone);
             //ManagerAlert.Instance.setalert(seeked);
             //Debug.Log(ManagerAlert.Instance.setalert(seeked));
 
         }
-        */
+        
     }
     /*public void setalert(){
         seeked = true;
     }*/
+    public string GetState()
+    {
+        return state;
+    }
+    public void SetState(string s)
+    {
+        this.state = s;
+    }
     private void OnTriggerEnter(Collider Ghost)
     {
         if(seeked == false){

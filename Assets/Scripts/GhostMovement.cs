@@ -17,7 +17,7 @@ public class GhostMovement : MonoBehaviour
     private GraphPathing _graphPathing;   //Se hara un getComponent mas tarde en el Update cuando se cambie a un nuevo waypoint
 
     //TEST
-    [SerializeField] private GameObject destinationWaypoint;
+    public GameObject destinationWaypoint;
     private List<GameObject> list;
     public bool isAlert;
     public bool isPatrolling;

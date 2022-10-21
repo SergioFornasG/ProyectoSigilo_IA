@@ -6,11 +6,14 @@ using UnityEngine;
 public class EnemyFOV : MonoBehaviour
 {
     public float visionRadius;
+    public float alertRadius;
     [Range(0, 360)] //restringido visionAngle entre esos valores
     public float visionAngle;
     public LayerMask playerMask;
     public LayerMask wallMask;
+    public LayerMask waypointMask;
     public GameObject zonaDeteccion;
+    public StateMachine stateMachine;
     
     public float meshResolution;    //Numero de rayos casteados
     public MeshFilter viewMeshFilter;
@@ -54,7 +57,25 @@ public class EnemyFOV : MonoBehaviour
                 var distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
                 if (zonaDeteccion.activeSelf && !Physics.Raycast(transform.position, directionToPlayer, distanceToPlayer, wallMask)) //Rayo lanzados desde enemigo hasta jugador, comprueba si hay o no pared en medio
-                    Debug.Log("uwu");
+                {
+                    var waypointAlert = Physics.OverlapSphere(transform.position, alertRadius, waypointMask);
+                    var minDist = 999f;
+                    var waypointTarget = transform;
+                    for(int i = 0; i < waypointAlert.Length; i++)
+                    {
+
+                        var aux = Vector3.Distance(transform.position, waypointAlert[i].transform.position);
+                        if (aux < minDist)
+                        {
+                            minDist = aux;
+                            waypointTarget = waypointAlert[i].transform;
+                        }
+                    }
+                    Debug.Log("waypoint: " + waypointTarget.position.x +" "+waypointTarget.position.z);
+                    //stateMachine.alert(waypointTarget);
+                    
+
+                }
             }
         }
     }
