@@ -8,11 +8,11 @@ public class Pathfinding : MonoBehaviour
 {
     public static Pathfinding Instance;
 
-    [SerializeField]private GameObject waypointsGameObject;
+    [SerializeField]private Collider waypointsGameObject;
     
     private void Awake() => Instance = this;
 
-    public List<GameObject> FindPath(GameObject originWaypoint, GameObject targetWaypoint)
+    public List<Collider> FindPath(Collider originWaypoint, Collider targetWaypoint)
     {
         var startingNode = new Node(originWaypoint);   //Pasamos el gameObject waypoint al constructor del nodo, asi podremos hacer uso de parametros como el fCost o el parent
         var targetNode = new Node(targetWaypoint);
@@ -36,7 +36,7 @@ public class Pathfinding : MonoBehaviour
             
             if (currentNode.thisWaypoint == targetNode.thisWaypoint)  //currentNode.thisWaypoint = targetWaypoint//
             {
-                var path = new List<GameObject>();
+                var path = new List<Collider>();
                 while (currentNode.thisWaypoint != startingNode.thisWaypoint)
                 {
                     path.Add(currentNode.thisWaypoint);
@@ -65,7 +65,7 @@ public class Pathfinding : MonoBehaviour
                 }
             }
         }
-        return new List<GameObject>();  //En caso de que no haya encontrado camino (imposible en nuestro juego eso sí), devolverá una lista vacía
+        return new List<Collider>();  //En caso de que no haya encontrado camino (imposible en nuestro juego eso sí), devolverá una lista vacía
     }
 
     private bool ClosedNodesContains(List<Node> closedNodes, Node node)
@@ -88,7 +88,7 @@ public class Pathfinding : MonoBehaviour
         return false;
     }
     
-    private List<GameObject> RetracePath(Node startNode, Node endNode)
+    /*private List<GameObject> RetracePath(Node startNode, Node endNode)
     {
         var path = new List<GameObject>();
         var currentNode = endNode;  //Se empieza desde el final para ir moviendose a traves de los parents
@@ -100,7 +100,7 @@ public class Pathfinding : MonoBehaviour
         }
         path.Reverse();
         return path;
-    } 
+    }*/
 
     private List<Node> FindNeighbours(Node currentNode)   //Encontrará los waypoints vecinos al actual
     {

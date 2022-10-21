@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Node : IHeapItem<Node>
 {
-    public GameObject thisWaypoint;
+    public Collider thisWaypoint;
     
     public float gCost;
     public float hCost;
@@ -12,7 +12,7 @@ public class Node : IHeapItem<Node>
 
     public float fCost => gCost + hCost;
 
-    public Node(GameObject waypoint)
+    public Node(Collider waypoint)
     {
         thisWaypoint = waypoint;
     }

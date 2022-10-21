@@ -8,17 +8,21 @@ public class GhostMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float turnSpeed;
-    private List<GameObject> _tempList;
     
     private Rigidbody _rigidbody;
-    [SerializeField] private GameObject waypointTarget;
-    private GameObject _lastPatrolWaypoint;
-    private GameObject _previousWaypoint;
+    [SerializeField] private Collider waypointTarget;
+    private Collider _lastPatrolWaypoint;
+    private Collider _previousWaypoint;
     private GraphPathing _graphPathing;   //Se hara un getComponent mas tarde en el Update cuando se cambie a un nuevo waypoint
 
     //TEST
+<<<<<<< Updated upstream
     public GameObject destinationWaypoint;
     private List<GameObject> list;
+=======
+    [SerializeField] private Collider destinationWaypoint;
+    private List<Collider> list;
+>>>>>>> Stashed changes
     public bool isAlert;
     public bool isPatrolling;
     public bool isReturningToPatrol;
@@ -43,6 +47,9 @@ public class GhostMovement : MonoBehaviour
             _lastPatrolWaypoint = waypointTarget;   //Guarda ultimo waypoint de la patrulla para que puede volver alli cuando termine de estar alerta
             _currentWaypointIndex = 0;
             list = Pathfinding.Instance.FindPath(waypointTarget, destinationWaypoint);
+            /*if (destinationWaypoint.GetComponent<GraphPathing>().isPositionAssigned == true)
+                list.Remove(list[list.Count - 1]);*/
+            //destinationWaypoint.GetComponent<GraphPathing>().isPositionAssigned = true;
             for (int i = 0; i < list.Count; i++)
             {
                 Debug.Log(list[i]);

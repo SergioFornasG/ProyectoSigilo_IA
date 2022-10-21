@@ -5,13 +5,13 @@ using UnityEngine;
 
 public class GraphPathing : MonoBehaviour
 {
-    public List<GameObject> arcosDeSalida;
-    public List<GameObject> arcoDeEntrada;
-    public List<GameObject> neighbors;
-    private bool _isPositionAssigned;
+    public List<Collider> arcosDeSalida;
+    public List<Collider> arcoDeEntrada;
+    public List<Collider> neighbors;
+    public bool isPositionAssigned;
 
     private void Start()
     {
-        _isPositionAssigned = false;
+        isPositionAssigned = false;
     }
 }
