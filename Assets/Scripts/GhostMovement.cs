@@ -16,20 +16,24 @@ public class GhostMovement : MonoBehaviour
     private GraphPathing _graphPathing;   //Se hara un getComponent mas tarde en el Update cuando se cambie a un nuevo waypoint
 
     //TEST
-    public Collider destinationWaypoint;
-    private List<Collider> list;
+    [HideInInspector]public Collider destinationWaypoint;
+    private List<Collider> _pathList;
     public bool isAlert;
     public bool isPatrolling;
     public bool isReturningToPatrol;
-    private bool _isPathReadyToCalculate;
-    private int _currentWaypointIndex;
-    private bool _isAlertPathReached;
+    private bool _isPathReadyToCalculate;   //Para que calcule el pathfinding una sola vez al cambiar al modo de alerta
+    private int _currentWaypointIndex;  //Para saber en que elemento de la lista del pathfinding se encuentra
+    private bool _isAlertPathReached;   //Para que pueda llegar al ultimo punto del camino sin quedarse parado en el anterior
+    private bool _isOverwatching;   //Para que cuando llegue al destino de la alerta no haga DesiredRotation()
+
+    private GraphPathing _destinationGraphPathing;
     //TEST
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _graphPathing = waypointTarget.GetComponent<GraphPathing>();
         _isPathReadyToCalculate = true;
+        _isOverwatching = false;
         _currentWaypointIndex = 0;
     }
 
@@ -41,28 +45,47 @@ public class GhostMovement : MonoBehaviour
         {
             _lastPatrolWaypoint = waypointTarget;   //Guarda ultimo waypoint de la patrulla para que puede volver alli cuando termine de estar alerta
             _currentWaypointIndex = 0;
-            list = Pathfinding.Instance.FindPath(waypointTarget, destinationWaypoint);
-            /*if (destinationWaypoint.GetComponent<GraphPathing>().isPositionAssigned == true)
-                list.Remove(list[list.Count - 1]);*/
-            //destinationWaypoint.GetComponent<GraphPathing>().isPositionAssigned = true;
-            for (int i = 0; i < list.Count; i++)
+            _pathList = Pathfinding.Instance.FindPath(waypointTarget, destinationWaypoint);
+
+            _destinationGraphPathing = destinationWaypoint.GetComponent<GraphPathing>();
+            if (_destinationGraphPathing.isPositionAssigned)
             {
-                Debug.Log(list[i]);
+                if (_pathList.Count > 1)    //Para que no se salga del rango
+                    _pathList.Remove(_pathList[_pathList.Count - 1]);   //Quita el ultimo elemento para que no pueda haber dos fantasmas en un mismo waypoint
+                _destinationGraphPathing = _pathList[_pathList.Count - 1].GetComponent<GraphPathing>(); //Aqui el _pathList.Count - 1 no equivale al mismo de la linea de arriba ya que ese se ha borrado
             }
-            _isAlertPathReached = false;
+            _destinationGraphPathing.isPositionAssigned = true;
+
+            /*for (var i = _pathList.Count - 1; i >= 0; i++)
+            {
+                _destinationGraphPathing = _pathList[i].GetComponent<GraphPathing>();
+                if (_destinationGraphPathing.isPositionAssigned)
+                    _pathList.Remove(_pathList[_pathList.Count - 1]);
+                else
+                {
+                    _destinationGraphPathing.isPositionAssigned = true;
+                    break;
+                }
+            }*/
+            
+            /*for (int i = 0; i < _pathList.Count; i++)
+            {
+                Debug.Log(_pathList[i]);
+            }*/
+            _isAlertPathReached = false;    //Se vuelve a poner aqui a falso para que luego se ponga true al llegar al final del pathing
             _isPathReadyToCalculate = false;
         }
         else if (!_isPathReadyToCalculate && !isAlert)
         {
             _currentWaypointIndex = 0;
-            list = Pathfinding.Instance.FindPath(waypointTarget, _lastPatrolWaypoint);
-            for (int i = 0; i < list.Count; i++)
+            _pathList = Pathfinding.Instance.FindPath(waypointTarget, _lastPatrolWaypoint);
+            /*for (int i = 0; i < _pathList.Count; i++)
             {
-                Debug.Log(list[i]);
-            }
+                Debug.Log(_pathList[i]);
+            }*/
 
             speed = 2;
-            Debug.Log("speed2");
+            //Debug.Log("speed2");
             _isPathReadyToCalculate = true;
         }
         else if (isAlert)
@@ -83,35 +106,39 @@ public class GhostMovement : MonoBehaviour
 
     private void CalculateAlertPathing()
     {
-        if (_currentWaypointIndex != list.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
+        if (_currentWaypointIndex != _pathList.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
         {
-            waypointTarget = list[_currentWaypointIndex];
+            waypointTarget = _pathList[_currentWaypointIndex];
             _currentWaypointIndex++;
         }
 
-        if (_currentWaypointIndex == list.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f && !_isAlertPathReached)
+        if (_currentWaypointIndex == _pathList.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f && !_isAlertPathReached)
         {
+            _isOverwatching = true;
+            transform.LookAt(destinationWaypoint.transform);    //Para mirar hacia el waypoint cercano al jugador en vez de poder quedarse mirando a la pared
             _isAlertPathReached = true;
-            Debug.Log("speed0");
+            _destinationGraphPathing.isPositionAssigned = false;    //Lo vuelve a poner a falso para que se pueda poner verdadero cuando se vuelva a llamar una alerta
+            //Debug.Log("speed0");
             speed = 0;
-            if (isReturningToPatrol)
+            /*if (isReturningToPatrol)
             {
                 isPatrolling = true;
                 isReturningToPatrol = false;
-            }
+            }*/
         }
-        DesiredRotation();
+        if (!_isOverwatching)
+            DesiredRotation();
     }
 
     private void CalculateReturnToPathing()
     {
-        if (_currentWaypointIndex != list.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
+        if (_currentWaypointIndex != _pathList.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
         {
-            waypointTarget = list[_currentWaypointIndex];
+            waypointTarget = _pathList[_currentWaypointIndex];
             _currentWaypointIndex++;
         }
 
-        if (_currentWaypointIndex == list.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
+        if (_currentWaypointIndex == _pathList.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
         {
             if (isReturningToPatrol)
             {
