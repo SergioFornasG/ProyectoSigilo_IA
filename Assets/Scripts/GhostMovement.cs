@@ -20,7 +20,7 @@ public class GhostMovement : MonoBehaviour
     private List<Collider> _pathList;
     public bool isAlert;
     public bool isPatrolling;
-    public bool isReturningToPatrol;
+    private bool isReturningToPatrol;
     private bool _isPathReadyToCalculate;   //Para que calcule el pathfinding una sola vez al cambiar al modo de alerta
     private int _currentWaypointIndex;  //Para saber en que elemento de la lista del pathfinding se encuentra
     private bool _isAlertPathReached;   //Para que pueda llegar al ultimo punto del camino sin quedarse parado en el anterior
@@ -118,13 +118,8 @@ public class GhostMovement : MonoBehaviour
             transform.LookAt(destinationWaypoint.transform);    //Para mirar hacia el waypoint cercano al jugador en vez de poder quedarse mirando a la pared
             _isAlertPathReached = true;
             _destinationGraphPathing.isPositionAssigned = false;    //Lo vuelve a poner a falso para que se pueda poner verdadero cuando se vuelva a llamar una alerta
-            //Debug.Log("speed0");
             speed = 0;
-            /*if (isReturningToPatrol)
-            {
-                isPatrolling = true;
-                isReturningToPatrol = false;
-            }*/
+            StartCoroutine(AlertTimer());
         }
         if (!_isOverwatching)
             DesiredRotation();
@@ -188,5 +183,12 @@ public class GhostMovement : MonoBehaviour
     public void setDestinationWaypoint(Collider wp)
     {
         this.destinationWaypoint = wp;
+    }
+
+    private IEnumerator AlertTimer()
+    {
+        yield return new WaitForSeconds(10f);
+        isAlert = false;
+        isReturningToPatrol = true;
     }
 }
