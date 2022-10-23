@@ -139,6 +139,7 @@ public class GhostMovement : MonoBehaviour
     
     private void CalculatePatrolPathing()
     {
+        Debug.Log(Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f);
         if (Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f) //Cuando llegue a un waypoint
         {
             _previousWaypoint = waypointTarget; //Guarda el waypoint en el que esta para luego poder borrarlo del siguiente y no aparezca como una opcion en el random
@@ -154,6 +155,7 @@ public class GhostMovement : MonoBehaviour
                 _graphPathing.arcoDeEntrada.RemoveAt(0);    //Se borra el de entrada ya que al volver por el mismo camino su puesto lo pasará a ocupar otro
             }
             _graphPathing = waypointTarget.GetComponent<GraphPathing>();
+            Debug.Log(_previousWaypoint);
             _graphPathing.arcoDeEntrada.Add(_previousWaypoint); //Justo despues de cambiar al graphPathing del siguiente waypoint, se le añade como arcoDeEntrada aquel del cual vienes
         }
         DesiredRotation();

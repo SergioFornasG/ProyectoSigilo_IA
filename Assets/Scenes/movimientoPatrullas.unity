@@ -1627,7 +1627,6 @@ MonoBehaviour:
   destinationWaypoint: {fileID: 290645870}
   isAlert: 0
   isPatrolling: 1
-  stateMachine: {fileID: 631478811}
 --- !u!4 &631478818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6925745739663848697, guid: abeb186619cc7e6419cb81e1e4dfa162,
@@ -2803,7 +2802,6 @@ MonoBehaviour:
   destinationWaypoint: {fileID: 290645870}
   isAlert: 0
   isPatrolling: 1
-  stateMachine: {fileID: 0}
 --- !u!114 &1069285665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3210,6 +3208,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1877286344017751807, guid: e58a8494f35e17f45ba5bbffdfb92517,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].time
+      value: 0.5324173
+      objectReference: {fileID: 0}
+    - target: {fileID: 1877286344017751807, guid: e58a8494f35e17f45ba5bbffdfb92517,
+        type: 3}
+      propertyPath: m_Parameters.widthCurve.m_Curve.Array.data[0].value
+      value: 0.5128212
       objectReference: {fileID: 0}
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
@@ -4627,7 +4635,6 @@ MonoBehaviour:
   destinationWaypoint: {fileID: 290645870}
   isAlert: 0
   isPatrolling: 1
-  stateMachine: {fileID: 6925745739663848708}
 --- !u!114 &6925745739663848703
 MonoBehaviour:
   m_ObjectHideFlags: 0
