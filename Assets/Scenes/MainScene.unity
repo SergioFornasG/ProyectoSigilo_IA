@@ -5331,7 +5331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRadius: 3.59
-  alertRadius: 0
+  alertRadius: 20
   visionAngle: 50
   playerMask:
     serializedVersion: 2
@@ -5343,7 +5343,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   zonaDeteccion: {fileID: 1690054987}
-  stateMachine: {fileID: 0}
+  stateMachine: {fileID: 94592756}
   meshResolution: 10
   viewMeshFilter: {fileID: 1690054990}
   edgeResolveIterations: 4
@@ -6761,11 +6761,56 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 310228305}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59622c68dc9f89c4d87709e41a0b56ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &320634123
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 320634125}
+  - component: {fileID: 320634124}
+  m_Layer: 0
+  m_Name: AI_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &320634124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320634123}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a313c92577a225242b5859664b93575b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waypointsGameObject: {fileID: 0}
+--- !u!4 &320634125
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 320634123}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 6.963063, y: -5.64093, z: -2.8670464}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 27
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &321896837
 GameObject:
   m_ObjectHideFlags: 0
@@ -15013,7 +15058,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805581756}
   m_LocalRotation: {x: 0.5948227, y: 0, z: 0, w: 0.80385697}
-  m_LocalPosition: {x: -22.45, y: 7.6504374, z: -5.5389757}
+  m_LocalPosition: {x: -13.27, y: 7.6504374, z: 7.1410246}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -15472,10 +15517,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   turnSpeed: 4
+  waypointDetectionRadius: 10
+  player: {fileID: 6077229646317852084}
+  waypointMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  stateMachine: {fileID: 886307960}
   waypointTarget: {fileID: 94209849}
-  destinationWaypoint: {fileID: 0}
-  isAlert: 0
-  isPatrolling: 1
+  destinationWaypoint: {fileID: 1992582093}
 --- !u!114 &886307959
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15501,11 +15550,28 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   zonaDeteccion: {fileID: 1829158374}
-  stateMachine: {fileID: 6925745739663848707}
+  stateMachine: {fileID: 886307960}
   meshResolution: 10
   viewMeshFilter: {fileID: 1829158377}
   edgeResolveIterations: 4
   edgeDistanceThreshold: 0.5
+--- !u!114 &886307960
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 886307952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d90e5203cec06464180390fcb3782537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ghost:
+    serializedVersion: 2
+    m_Bits: 8192
+  state: patrol
+  seeked: 0
 --- !u!1 &886592380 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8409216831970877250, guid: 549c69af39b84624b8a053537c407def,
@@ -15519,7 +15585,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 886592380}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59622c68dc9f89c4d87709e41a0b56ef, type: 3}
   m_Name: 
@@ -15533,7 +15599,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 894613339}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Waypoints
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16592,10 +16658,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   turnSpeed: 4
+  waypointDetectionRadius: 10
+  player: {fileID: 6077229646317852084}
+  waypointMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  stateMachine: {fileID: 1188232086}
   waypointTarget: {fileID: 818937874}
-  destinationWaypoint: {fileID: 0}
-  isAlert: 0
-  isPatrolling: 1
+  destinationWaypoint: {fileID: 1992582093}
 --- !u!114 &1188232085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16609,7 +16679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRadius: 3.5
-  alertRadius: 7
+  alertRadius: 20
   visionAngle: 45
   playerMask:
     serializedVersion: 2
@@ -16621,11 +16691,28 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   zonaDeteccion: {fileID: 605977661}
-  stateMachine: {fileID: 6925745739663848707}
+  stateMachine: {fileID: 1188232086}
   meshResolution: 10
   viewMeshFilter: {fileID: 605977664}
   edgeResolveIterations: 4
   edgeDistanceThreshold: 0.5
+--- !u!114 &1188232086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188232078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d90e5203cec06464180390fcb3782537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ghost:
+    serializedVersion: 2
+    m_Bits: 8192
+  state: patrol
+  seeked: 0
 --- !u!1001 &1192557665
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16742,7 +16829,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293594174}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59622c68dc9f89c4d87709e41a0b56ef, type: 3}
   m_Name: 
@@ -22599,7 +22686,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRadius: 3.59
-  alertRadius: 0
+  alertRadius: 20
   visionAngle: 50
   playerMask:
     serializedVersion: 2
@@ -22611,7 +22698,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   zonaDeteccion: {fileID: 191069101}
-  stateMachine: {fileID: 0}
+  stateMachine: {fileID: 1496556754}
   meshResolution: 10
   viewMeshFilter: {fileID: 191069104}
   edgeResolveIterations: 4
@@ -22901,7 +22988,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.5640496, y: 1}
+    m_SensorSize: {x: 1.2625482, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -22918,7 +23005,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1527396175}
   m_LocalRotation: {x: 0.5948227, y: 0, z: 0, w: 0.80385697}
-  m_LocalPosition: {x: -22.45, y: 7.6504374, z: -5.5389757}
+  m_LocalPosition: {x: -13.27, y: 7.6504374, z: 7.1410246}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -23897,7 +23984,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1805592907}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 59622c68dc9f89c4d87709e41a0b56ef, type: 3}
   m_Name: 
@@ -24399,10 +24486,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   turnSpeed: 4
+  waypointDetectionRadius: 10
+  player: {fileID: 6077229646317852084}
+  waypointMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  stateMachine: {fileID: 1845671777}
   waypointTarget: {fileID: 480761044}
-  destinationWaypoint: {fileID: 0}
-  isAlert: 0
-  isPatrolling: 1
+  destinationWaypoint: {fileID: 1992582093}
 --- !u!114 &1845671776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24428,11 +24519,28 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   zonaDeteccion: {fileID: 611608796}
-  stateMachine: {fileID: 6925745739663848707}
+  stateMachine: {fileID: 1845671777}
   meshResolution: 10
   viewMeshFilter: {fileID: 611608799}
   edgeResolveIterations: 4
   edgeDistanceThreshold: 0.5
+--- !u!114 &1845671777
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 718159131}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d90e5203cec06464180390fcb3782537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ghost:
+    serializedVersion: 2
+    m_Bits: 8192
+  state: patrol
+  seeked: 0
 --- !u!1 &1852266839 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5075534488604402034, guid: abeb186619cc7e6419cb81e1e4dfa162,
@@ -24453,10 +24561,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   turnSpeed: 4
+  waypointDetectionRadius: 10
+  player: {fileID: 6077229646317852084}
+  waypointMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  stateMachine: {fileID: 1852266850}
   waypointTarget: {fileID: 104369484}
-  destinationWaypoint: {fileID: 0}
-  isAlert: 0
-  isPatrolling: 1
+  destinationWaypoint: {fileID: 1992582093}
 --- !u!114 &1852266849
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24482,11 +24594,28 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   zonaDeteccion: {fileID: 1073908824}
-  stateMachine: {fileID: 6925745739663848707}
+  stateMachine: {fileID: 1852266850}
   meshResolution: 10
   viewMeshFilter: {fileID: 1073908827}
   edgeResolveIterations: 4
   edgeDistanceThreshold: 0.5
+--- !u!114 &1852266850
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1852266839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d90e5203cec06464180390fcb3782537, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Ghost:
+    serializedVersion: 2
+    m_Bits: 8192
+  state: patrol
+  seeked: 0
 --- !u!1 &1944691972
 GameObject:
   m_ObjectHideFlags: 0
@@ -25148,7 +25277,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRadius: 5.5
-  alertRadius: 0
+  alertRadius: 20
   visionAngle: 43
   playerMask:
     serializedVersion: 2
@@ -25160,7 +25289,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2048
   zonaDeteccion: {fileID: 538341762}
-  stateMachine: {fileID: 0}
+  stateMachine: {fileID: 2000012370}
   meshResolution: 10
   viewMeshFilter: {fileID: 538341765}
   edgeResolveIterations: 4
@@ -27686,6 +27815,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 3750368071706911477, guid: 549c69af39b84624b8a053537c407def,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3851052464670322696, guid: 549c69af39b84624b8a053537c407def,
         type: 3}
       propertyPath: m_Layer
@@ -29232,7 +29366,7 @@ PrefabInstance:
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -22.45
+      value: -13.27
       objectReference: {fileID: 0}
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
@@ -29242,7 +29376,7 @@ PrefabInstance:
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.2
+      value: 9.48
       objectReference: {fileID: 0}
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
@@ -29615,6 +29749,12 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4012380625681614536}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &6077229646317852084 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3576288450122217075, guid: e58a8494f35e17f45ba5bbffdfb92517,
+    type: 3}
+  m_PrefabInstance: {fileID: 4012380625681614536}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6136966654407605910
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29849,10 +29989,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   turnSpeed: 4
+  waypointDetectionRadius: 10
+  player: {fileID: 6077229646317852084}
+  waypointMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  stateMachine: {fileID: 6925745739663848707}
   waypointTarget: {fileID: 1961611982}
-  destinationWaypoint: {fileID: 0}
-  isAlert: 0
-  isPatrolling: 1
+  destinationWaypoint: {fileID: 1992582093}
 --- !u!114 &6925745739663848707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29883,7 +30027,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRadius: 3.5
-  alertRadius: 7
+  alertRadius: 10
   visionAngle: 45
   playerMask:
     serializedVersion: 2

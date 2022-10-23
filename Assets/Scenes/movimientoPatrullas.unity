@@ -1592,7 +1592,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   visionRadius: 3
-  alertRadius: 0.31
+  alertRadius: 50
   visionAngle: 70
   playerMask:
     serializedVersion: 2
@@ -1623,17 +1623,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   turnSpeed: 5
-  waypointDetectionRadius: 0
-  player: {fileID: 0}
+  waypointDetectionRadius: 50
+  player: {fileID: 1014117597}
   waypointMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2048
+  stateMachine: {fileID: 631478811}
   waypointTarget: {fileID: 1320792722}
   destinationWaypoint: {fileID: 290645870}
-  isAlert: 0
-  isPatrolling: 1
-  isChasing: 0
-  _isReturningFromChase: 0
 --- !u!4 &631478818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6925745739663848697, guid: abeb186619cc7e6419cb81e1e4dfa162,
@@ -2012,7 +2009,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 805581756}
   m_LocalRotation: {x: 0.29159188, y: 0.6441849, z: -0.29159188, w: 0.6441849}
-  m_LocalPosition: {x: -10.639174, y: 6.010851, z: 12.78}
+  m_LocalPosition: {x: -3.469174, y: 6.0108514, z: 17.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2383,6 +2380,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 5075534488604402034, guid: abeb186619cc7e6419cb81e1e4dfa162,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5863192054190611860, guid: abeb186619cc7e6419cb81e1e4dfa162,
         type: 3}
       propertyPath: m_Layer
@@ -2623,6 +2625,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 5075534488604402034, guid: abeb186619cc7e6419cb81e1e4dfa162,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5863192054190611860, guid: abeb186619cc7e6419cb81e1e4dfa162,
         type: 3}
       propertyPath: m_Layer
@@ -2651,7 +2658,7 @@ PrefabInstance:
     - target: {fileID: 6925745739663848697, guid: abeb186619cc7e6419cb81e1e4dfa162,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.86
+      value: -14.4
       objectReference: {fileID: 0}
     - target: {fileID: 6925745739663848697, guid: abeb186619cc7e6419cb81e1e4dfa162,
         type: 3}
@@ -2816,12 +2823,9 @@ MonoBehaviour:
   waypointMask:
     serializedVersion: 2
     m_Bits: 0
+  stateMachine: {fileID: 0}
   waypointTarget: {fileID: 551877080}
   destinationWaypoint: {fileID: 290645870}
-  isAlert: 0
-  isPatrolling: 1
-  isChasing: 0
-  _isReturningFromChase: 0
 --- !u!114 &1069285665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3247,7 +3251,7 @@ PrefabInstance:
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.36
+      value: 1.81
       objectReference: {fileID: 0}
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
@@ -3257,7 +3261,7 @@ PrefabInstance:
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.78
+      value: 17.77
       objectReference: {fileID: 0}
     - target: {fileID: 2008973354732098957, guid: e58a8494f35e17f45ba5bbffdfb92517,
         type: 3}
@@ -3739,7 +3743,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1527396175}
   m_LocalRotation: {x: 0.29159188, y: 0.6441849, z: -0.29159188, w: 0.6441849}
-  m_LocalPosition: {x: -10.639174, y: 6.010851, z: 12.78}
+  m_LocalPosition: {x: -3.469174, y: 6.0108514, z: 17.77}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -4649,19 +4653,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2dff04d9be9704d8fe80d9531819d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 4
   turnSpeed: 5
   waypointDetectionRadius: 10
   player: {fileID: 1014117597}
   waypointMask:
     serializedVersion: 2
     m_Bits: 2048
+  stateMachine: {fileID: 6925745739663848708}
   waypointTarget: {fileID: 551877080}
   destinationWaypoint: {fileID: 290645870}
-  isAlert: 0
-  isPatrolling: 1
-  isChasing: 0
-  _isReturningFromChase: 0
 --- !u!114 &6925745739663848703
 MonoBehaviour:
   m_ObjectHideFlags: 0

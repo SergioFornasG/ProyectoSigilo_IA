@@ -86,10 +86,10 @@ public class EnemyFOV : MonoBehaviour
         }
         else if (stateMachine.GetState() == "pursuit")
         {
-            Debug.Log(noVisibleTimer);
+            //Debug.Log(noVisibleTimer);
             noVisibleTimer -= Time.deltaTime;
             if (noVisibleTimer <= 0)
-                stateMachine.SetState("returnFromChase");
+                stateMachine.SetState("returnFromPursuit");
         }
     }
     

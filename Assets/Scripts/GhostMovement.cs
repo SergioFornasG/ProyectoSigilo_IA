@@ -13,6 +13,7 @@ public class GhostMovement : MonoBehaviour
     public Collider player;
     public LayerMask waypointMask;
     private Rigidbody _rigidbody;
+    public StateMachine stateMachine;
     [SerializeField] private Collider waypointTarget;
     private Collider _lastPatrolWaypoint;
     private Collider _previousWaypoint;
@@ -21,11 +22,11 @@ public class GhostMovement : MonoBehaviour
     //TEST
     public Collider destinationWaypoint;
     private List<Collider> _pathList;
-    public bool isAlert;
+    /*public bool isAlert;
     public bool isPatrolling;
     public bool isChasing;
     private bool _isReturningFromAlarm;
-    public bool _isReturningFromChase;
+    public bool _isReturningFromChase;*/
     
     private bool _isPathReadyToCalculate;   //Para que calcule el pathfinding una sola vez al cambiar al modo de alerta
     private int _currentWaypointIndex;  //Para saber en que elemento de la lista del pathfinding se encuentra
@@ -43,26 +44,30 @@ public class GhostMovement : MonoBehaviour
         _isOverwatching = false;
         _isLastWaypointAssigned = false;
         _hasReturnFromChaseStarted = false;
-        _isReturningFromChase = false;
+        //_isReturningFromChase = false;
         _currentWaypointIndex = 0;
     }
 
     private void Update()
     {
-        if (!isPatrolling && !_isLastWaypointAssigned)
+        if (stateMachine.GetState() != "patrol" && !_isLastWaypointAssigned)
         {
             _lastPatrolWaypoint = waypointTarget; //Guarda ultimo waypoint de la patrulla para que puede volver alli cuando termine de estar alerta
             _isLastWaypointAssigned = true;
         }
 
-        if (isPatrolling)
+        if (stateMachine.GetState() == "patrol")
             CalculatePatrolPathing();
         
-        else if (isAlert && _isPathReadyToCalculate)   //Solo una vez cuando cambia de patrullando a alerta, asi que calcule el camino
+        else if (stateMachine.GetState() == "alert" && _isPathReadyToCalculate)   //Solo una vez cuando cambia de patrullando a alerta, asi que calcule el camino
         {
+            Debug.Log("entra");
             _currentWaypointIndex = 0;
             _pathList = Pathfinding.Instance.FindPath(waypointTarget, destinationWaypoint);
-
+            for (int i = 0; i < _pathList.Count; i++)
+            {
+                Debug.Log(_pathList[i]);
+            }
             _destinationGraphPathing = destinationWaypoint.GetComponent<GraphPathing>();
             if (_destinationGraphPathing.isPositionAssigned)
             {
@@ -74,7 +79,7 @@ public class GhostMovement : MonoBehaviour
             _isAlertPathReached = false;    //Se vuelve a poner aqui a falso para que luego se ponga true al llegar al final del pathing
             _isPathReadyToCalculate = false;
         }
-        else if (!_isPathReadyToCalculate && !isAlert)
+        else if (!_isPathReadyToCalculate && stateMachine.GetState() != "alert")
         {
             _currentWaypointIndex = 0;
             _pathList = Pathfinding.Instance.FindPath(waypointTarget, _lastPatrolWaypoint);
@@ -87,8 +92,9 @@ public class GhostMovement : MonoBehaviour
             //Debug.Log("speed2");
             _isPathReadyToCalculate = true;
         }
-        else if (_isReturningFromChase && !_hasReturnFromChaseStarted)
+        else if (stateMachine.GetState() == "returnFromPursuit" && !_hasReturnFromChaseStarted)
         {
+            Debug.Log("feferfewa");
             _hasReturnFromChaseStarted = true;
             var waypointChase = Physics.OverlapSphere(transform.position, waypointDetectionRadius, waypointMask);
             var minDist = 999f;
@@ -107,15 +113,15 @@ public class GhostMovement : MonoBehaviour
             _currentWaypointIndex = 0;
             _pathList = Pathfinding.Instance.FindPath(waypointTarget, _lastPatrolWaypoint);
         }
-        else if (isAlert)
+        else if (stateMachine.GetState() == "alert")
         {
             CalculateAlertPathing();
         }
-        else if (_isReturningFromAlarm || _isReturningFromChase)
+        else if (stateMachine.GetState() == "returnFromAlert" || stateMachine.GetState() == "returnFromPursuit")
         {
             CalculateReturnToPathing();
         }
-        else if (isChasing)
+        else if (stateMachine.GetState() == "pursuit")
         {
             CalculatePursuit();
             
@@ -124,7 +130,7 @@ public class GhostMovement : MonoBehaviour
 
     private void FixedUpdate()  //En FixedUpdate ya que son movimientos causados por las fisicas
     {
-        if (!isChasing)
+        if (stateMachine.GetState() != "pursuit")
             PatrolMovement();
     }
 
@@ -159,11 +165,11 @@ public class GhostMovement : MonoBehaviour
 
         if (_currentWaypointIndex == _pathList.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
         {
-            if (_isReturningFromAlarm || _isReturningFromChase)
+            if (stateMachine.GetState() == "returnFromAlert" || stateMachine.GetState() == "returnFromPursuit")
             {
-                isPatrolling = true;
-                _isReturningFromAlarm = false;
-                _isReturningFromChase = false;
+                stateMachine.SetState("patrol");
+                /*_isReturningFromAlarm = false;
+                _isReturningFromChase = false;*/
                 _isLastWaypointAssigned = false;
             }
         }
@@ -197,7 +203,10 @@ public class GhostMovement : MonoBehaviour
         var direction = player.transform.position - transform.position;
         var rotation = Quaternion.LookRotation(direction);
 
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position + player.transform.forward * 2, speed * Time.deltaTime);
+        if (Vector3.Distance(transform.position, player.transform.position) < 2f)
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
+        else
+            transform.position = Vector3.MoveTowards(transform.position, player.transform.position + player.transform.forward * 2, speed * Time.deltaTime);
         transform.rotation = Quaternion.Lerp(transform.rotation, rotation, turnSpeed * Time.deltaTime);
     }
 
@@ -222,8 +231,7 @@ public class GhostMovement : MonoBehaviour
     private IEnumerator AlertTimer()
     {
         yield return new WaitForSeconds(10f);
-        isAlert = false;
-        _isReturningFromAlarm = true;
+        stateMachine.SetState("returnFromAlert");
         _isOverwatching = false;
     }
 }

@@ -14,7 +14,7 @@ public class StateMachine : MonoBehaviour
     void Start()
     {
         //g_Collider = GetComponent<Collider>();
-        //state = "patrol";
+        state = "patrol";
         seeked = false;
         /*Debug.Log(message:
         ManagerAlert.Instance.setalert(seeked));*/
@@ -69,7 +69,7 @@ public class StateMachine : MonoBehaviour
     //Crea una llamda de alerta hacia la posición waypointDestination alrededor del elemento que contiene este script
     public void alert(Collider waypointDestination){
              
-        ghostInsideZone = Physics.OverlapSphere(transform.position, 50,Ghost);
+        ghostInsideZone = Physics.OverlapSphere(transform.position, 20,Ghost);
         if(ghostInsideZone.Length >= 1)
         {
             foreach (var ghost in ghostInsideZone)
