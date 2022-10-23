@@ -21,29 +21,38 @@ public class GhostMovement : MonoBehaviour
     public bool isAlert;
     public bool isPatrolling;
     private bool isReturningToPatrol;
+    
     private bool _isPathReadyToCalculate;   //Para que calcule el pathfinding una sola vez al cambiar al modo de alerta
     private int _currentWaypointIndex;  //Para saber en que elemento de la lista del pathfinding se encuentra
     private bool _isAlertPathReached;   //Para que pueda llegar al ultimo punto del camino sin quedarse parado en el anterior
     private bool _isOverwatching;   //Para que cuando llegue al destino de la alerta no haga DesiredRotation()
-
-    private GraphPathing _destinationGraphPathing;
-    //TEST
+    private bool _isLastWaypointAssigned;   //Para que solo se guarde el ultimo punto de la patrulla la primera vez que deje de estar en patrulla
+    private GraphPathing _destinationGraphPathing;  //Para poder acceder a isPositionAssigned
+    
     private void Start()
     {
         _rigidbody = GetComponent<Rigidbody>();
         _graphPathing = waypointTarget.GetComponent<GraphPathing>();
         _isPathReadyToCalculate = true;
         _isOverwatching = false;
+        _isLastWaypointAssigned = false;
         _currentWaypointIndex = 0;
     }
 
     private void Update()
     {
+        if (!isPatrolling && !_isLastWaypointAssigned)
+        {
+            _lastPatrolWaypoint = waypointTarget; //Guarda ultimo waypoint de la patrulla para que puede volver alli cuando termine de estar alerta
+            _isLastWaypointAssigned = true;
+            Debug.Log("eweq");
+        }
+
         if (isPatrolling)
             CalculatePatrolPathing();
+        
         else if (isAlert && _isPathReadyToCalculate)   //Solo una vez cuando cambia de patrullando a alerta, asi que calcule el camino
         {
-            _lastPatrolWaypoint = waypointTarget;   //Guarda ultimo waypoint de la patrulla para que puede volver alli cuando termine de estar alerta
             _currentWaypointIndex = 0;
             _pathList = Pathfinding.Instance.FindPath(waypointTarget, destinationWaypoint);
 
@@ -55,23 +64,6 @@ public class GhostMovement : MonoBehaviour
                 _destinationGraphPathing = _pathList[_pathList.Count - 1].GetComponent<GraphPathing>(); //Aqui el _pathList.Count - 1 no equivale al mismo de la linea de arriba ya que ese se ha borrado
             }
             _destinationGraphPathing.isPositionAssigned = true;
-
-            /*for (var i = _pathList.Count - 1; i >= 0; i++)
-            {
-                _destinationGraphPathing = _pathList[i].GetComponent<GraphPathing>();
-                if (_destinationGraphPathing.isPositionAssigned)
-                    _pathList.Remove(_pathList[_pathList.Count - 1]);
-                else
-                {
-                    _destinationGraphPathing.isPositionAssigned = true;
-                    break;
-                }
-            }*/
-            
-            /*for (int i = 0; i < _pathList.Count; i++)
-            {
-                Debug.Log(_pathList[i]);
-            }*/
             _isAlertPathReached = false;    //Se vuelve a poner aqui a falso para que luego se ponga true al llegar al final del pathing
             _isPathReadyToCalculate = false;
         }
@@ -139,6 +131,7 @@ public class GhostMovement : MonoBehaviour
             {
                 isPatrolling = true;
                 isReturningToPatrol = false;
+                _isLastWaypointAssigned = false;
             }
         }
         DesiredRotation();
@@ -190,5 +183,6 @@ public class GhostMovement : MonoBehaviour
         yield return new WaitForSeconds(10f);
         isAlert = false;
         isReturningToPatrol = true;
+        _isOverwatching = false;
     }
 }
