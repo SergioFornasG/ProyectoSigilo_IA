@@ -1,9 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+[RequireComponent(typeof(LineRenderer))]
 
 public class PlayerMovement : MonoBehaviour
 {
+
+    public float hearRadius = 10f;
+    private float originalHearRadius;
+    [Range(0, 50)]
+    public int segments = 50;
+    private float xradius;
+    private float yradius;
+    LineRenderer line;
     public enum State { Run, Walk, Stealth };
     public float turnSpeed = 20f;
     public float movementSpeed = 2f;
@@ -21,6 +30,11 @@ public class PlayerMovement : MonoBehaviour
         m_Animator = GetComponent<Animator> ();
         m_Rigidbody = GetComponent<Rigidbody> ();
         m_AudioSource = GetComponent<AudioSource> ();
+        line = gameObject.GetComponent<LineRenderer>();
+        originalHearRadius = hearRadius;
+        line.SetVertexCount(segments + 1);
+        line.useWorldSpace = false;
+        DrawCirecle();
     }
 
     void FixedUpdate ()
@@ -54,22 +68,26 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        //DrawCirecle(100, 1);
         if (Input.GetKey(KeyCode.LeftControl))
         {
             playerState = State.Run;
             movementSpeed = 4f;
+            hearRadius = originalHearRadius * 1.5f;
         }
         else if (Input.GetKey(KeyCode.LeftShift))
         {
             playerState = State.Stealth;
             movementSpeed = .5f;
+            hearRadius = originalHearRadius / 3;
         }
         else
         {
             playerState = State.Walk;
             movementSpeed = 1f;
+            hearRadius = originalHearRadius;
         }
-        
+        DrawCirecle();
     }
 
     void OnAnimatorMove ()
@@ -81,5 +99,31 @@ public class PlayerMovement : MonoBehaviour
     public void changeHide()
     {
         isHiding = !isHiding;
+    }
+
+
+    void DrawCirecle()
+    {
+        xradius = hearRadius;
+        yradius = hearRadius;
+        CreatePoints(xradius, yradius);
+    }
+    void CreatePoints(float xrad, float yrad)
+    {
+        float x;
+        float y;
+        float z;
+
+        float angle = 20f;
+
+        for (int i = 0; i < (segments + 1); i++)
+        {
+            x = Mathf.Sin(Mathf.Deg2Rad * angle) * xrad;
+            y = Mathf.Cos(Mathf.Deg2Rad * angle) * yrad;
+
+            line.SetPosition(i, new Vector3(x, 0, y));
+
+            angle += (360f / segments);
+        }
     }
 }

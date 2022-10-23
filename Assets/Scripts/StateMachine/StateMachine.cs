@@ -20,7 +20,7 @@ public class StateMachine : MonoBehaviour
         ManagerAlert.Instance.setalert(seeked));*/
     }
 
-    
+    /*
     void Update()
     {
         switch (state)
@@ -62,17 +62,14 @@ public class StateMachine : MonoBehaviour
             break;
         /*
         default:
-            break;*/
+            break;
     }
     }
+*/
+    //Crea una llamda de alerta hacia la posición waypointDestination alrededor del elemento que contiene este script
     public void alert(Collider waypointDestination){
-        //enable collider
-        
-            //g_Collider.enabled = true;
-        
-        
+             
         ghostInsideZone = Physics.OverlapSphere(transform.position, 50,Ghost);
-        //Debug.Log(ghostInsideZone = Physics.OverlapSphere(transform.position, 30,Ghost));
         if(ghostInsideZone.Length >= 1)
         {
             foreach (var ghost in ghostInsideZone)
@@ -80,10 +77,6 @@ public class StateMachine : MonoBehaviour
 
                 var movement = ghost.GetComponent<GhostMovement>();
                 if(movement != null) movement.setDestinationWaypoint(waypointDestination);
-                //Pasar el waypoint a los nuevos fantasmas 
-                //Debug.Log(ghostInsideZone);
-                //ManagerAlert.Instance.setalert(seeked);
-                //Debug.Log(ManagerAlert.Instance.setalert(seeked));
 
             }
         }
