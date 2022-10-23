@@ -7,6 +7,9 @@ public class EnemyFOV : MonoBehaviour
 {
     public float visionRadius;
     public float alertRadius;
+    private float noVisibleTimer;
+    private bool _wasPlayerSeenBefore;
+    
     [Range(0, 360)] //restringido visionAngle entre esos valores
     public float visionAngle;
     public LayerMask playerMask;
@@ -28,6 +31,7 @@ public class EnemyFOV : MonoBehaviour
         _viewMesh.name = "View Mesh";
         viewMeshFilter.mesh = _viewMesh;
         StartCoroutine(nameof(FindPlayer), .2f);
+        _wasPlayerSeenBefore = false;
     }
 
     private IEnumerator FindPlayer(float wait)
@@ -42,6 +46,7 @@ public class EnemyFOV : MonoBehaviour
     {
         //FindPlayerInView();
         DrawFOV();
+        
     }
     
     private void FindPlayerInView()
@@ -73,10 +78,18 @@ public class EnemyFOV : MonoBehaviour
                     }
                     //Debug.Log("waypoint: " + waypointTarget.position.x +" "+waypointTarget.position.z);
                     stateMachine.alert(waypointTarget);
-                    
-
+                    stateMachine.SetState("pursuit");
+                    noVisibleTimer = .15f;
+                    _wasPlayerSeenBefore = true;
                 }
             }
+        }
+        else if (stateMachine.GetState() == "pursuit")
+        {
+            Debug.Log(noVisibleTimer);
+            noVisibleTimer -= Time.deltaTime;
+            if (noVisibleTimer <= 0)
+                stateMachine.SetState("returnFromChase");
         }
     }
     

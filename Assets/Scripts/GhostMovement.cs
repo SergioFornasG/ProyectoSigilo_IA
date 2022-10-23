@@ -8,7 +8,10 @@ public class GhostMovement : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float turnSpeed;
-    
+    [SerializeField] private float waypointDetectionRadius;
+
+    public Collider player;
+    public LayerMask waypointMask;
     private Rigidbody _rigidbody;
     [SerializeField] private Collider waypointTarget;
     private Collider _lastPatrolWaypoint;
@@ -16,17 +19,20 @@ public class GhostMovement : MonoBehaviour
     private GraphPathing _graphPathing;   //Se hara un getComponent mas tarde en el Update cuando se cambie a un nuevo waypoint
 
     //TEST
-    [HideInInspector]public Collider destinationWaypoint;
+    public Collider destinationWaypoint;
     private List<Collider> _pathList;
     public bool isAlert;
     public bool isPatrolling;
-    private bool isReturningToPatrol;
+    public bool isChasing;
+    private bool _isReturningFromAlarm;
+    public bool _isReturningFromChase;
     
     private bool _isPathReadyToCalculate;   //Para que calcule el pathfinding una sola vez al cambiar al modo de alerta
     private int _currentWaypointIndex;  //Para saber en que elemento de la lista del pathfinding se encuentra
     private bool _isAlertPathReached;   //Para que pueda llegar al ultimo punto del camino sin quedarse parado en el anterior
     private bool _isOverwatching;   //Para que cuando llegue al destino de la alerta no haga DesiredRotation()
     private bool _isLastWaypointAssigned;   //Para que solo se guarde el ultimo punto de la patrulla la primera vez que deje de estar en patrulla
+    private bool _hasReturnFromChaseStarted;
     private GraphPathing _destinationGraphPathing;  //Para poder acceder a isPositionAssigned
     
     private void Start()
@@ -36,6 +42,8 @@ public class GhostMovement : MonoBehaviour
         _isPathReadyToCalculate = true;
         _isOverwatching = false;
         _isLastWaypointAssigned = false;
+        _hasReturnFromChaseStarted = false;
+        _isReturningFromChase = false;
         _currentWaypointIndex = 0;
     }
 
@@ -45,7 +53,6 @@ public class GhostMovement : MonoBehaviour
         {
             _lastPatrolWaypoint = waypointTarget; //Guarda ultimo waypoint de la patrulla para que puede volver alli cuando termine de estar alerta
             _isLastWaypointAssigned = true;
-            Debug.Log("eweq");
         }
 
         if (isPatrolling)
@@ -80,19 +87,44 @@ public class GhostMovement : MonoBehaviour
             //Debug.Log("speed2");
             _isPathReadyToCalculate = true;
         }
+        else if (_isReturningFromChase && !_hasReturnFromChaseStarted)
+        {
+            _hasReturnFromChaseStarted = true;
+            var waypointChase = Physics.OverlapSphere(transform.position, waypointDetectionRadius, waypointMask);
+            var minDist = 999f;
+            var possibleWaypoint = new Collider();
+            for(var i = 0; i < waypointChase.Length; i++)
+            {
+
+                var aux = Vector3.Distance(transform.position, waypointChase[i].transform.position);
+                if (aux < minDist)
+                {
+                    minDist = aux;
+                    possibleWaypoint = waypointChase[i];
+                }
+            }
+            waypointTarget = possibleWaypoint;
+            _currentWaypointIndex = 0;
+            _pathList = Pathfinding.Instance.FindPath(waypointTarget, _lastPatrolWaypoint);
+        }
         else if (isAlert)
         {
             CalculateAlertPathing();
         }
-        else if (isReturningToPatrol)
+        else if (_isReturningFromAlarm || _isReturningFromChase)
         {
             CalculateReturnToPathing();
+        }
+        else if (isChasing)
+        {
+            CalculatePursuit();
+            
         }
     }
 
     private void FixedUpdate()  //En FixedUpdate ya que son movimientos causados por las fisicas
     {
-        if (isPatrolling || isAlert || isReturningToPatrol)
+        if (!isChasing)
             PatrolMovement();
     }
 
@@ -127,10 +159,11 @@ public class GhostMovement : MonoBehaviour
 
         if (_currentWaypointIndex == _pathList.Count && Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f)
         {
-            if (isReturningToPatrol)
+            if (_isReturningFromAlarm || _isReturningFromChase)
             {
                 isPatrolling = true;
-                isReturningToPatrol = false;
+                _isReturningFromAlarm = false;
+                _isReturningFromChase = false;
                 _isLastWaypointAssigned = false;
             }
         }
@@ -139,7 +172,6 @@ public class GhostMovement : MonoBehaviour
     
     private void CalculatePatrolPathing()
     {
-        Debug.Log(Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f);
         if (Vector3.Distance(transform.position, waypointTarget.transform.position) < 0.3f) //Cuando llegue a un waypoint
         {
             _previousWaypoint = waypointTarget; //Guarda el waypoint en el que esta para luego poder borrarlo del siguiente y no aparezca como una opcion en el random
@@ -155,15 +187,22 @@ public class GhostMovement : MonoBehaviour
                 _graphPathing.arcoDeEntrada.RemoveAt(0);    //Se borra el de entrada ya que al volver por el mismo camino su puesto lo pasará a ocupar otro
             }
             _graphPathing = waypointTarget.GetComponent<GraphPathing>();
-            Debug.Log(_previousWaypoint);
             _graphPathing.arcoDeEntrada.Add(_previousWaypoint); //Justo despues de cambiar al graphPathing del siguiente waypoint, se le añade como arcoDeEntrada aquel del cual vienes
         }
         DesiredRotation();
     }
 
+    private void CalculatePursuit()
+    {
+        var direction = player.transform.position - transform.position;
+        var rotation = Quaternion.LookRotation(direction);
+
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position + player.transform.forward * 2, speed * Time.deltaTime);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, turnSpeed * Time.deltaTime);
+    }
+
     private void PatrolMovement()
     {
-        //if (_isMoving)
         _rigidbody.MovePosition(transform.position + transform.forward * (speed * Time.fixedDeltaTime));
     }
 
@@ -184,7 +223,7 @@ public class GhostMovement : MonoBehaviour
     {
         yield return new WaitForSeconds(10f);
         isAlert = false;
-        isReturningToPatrol = true;
+        _isReturningFromAlarm = true;
         _isOverwatching = false;
     }
 }

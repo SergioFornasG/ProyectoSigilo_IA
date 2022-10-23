@@ -1021,7 +1021,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6925745739663848697}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &515575947
 GameObject:
@@ -1623,10 +1623,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 4
   turnSpeed: 5
+  waypointDetectionRadius: 0
+  player: {fileID: 0}
+  waypointMask:
+    serializedVersion: 2
+    m_Bits: 0
   waypointTarget: {fileID: 1320792722}
   destinationWaypoint: {fileID: 290645870}
   isAlert: 0
   isPatrolling: 1
+  isChasing: 0
+  _isReturningFromChase: 0
 --- !u!4 &631478818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6925745739663848697, guid: abeb186619cc7e6419cb81e1e4dfa162,
@@ -1714,7 +1721,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 631478818}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &710439637
 GameObject:
@@ -1797,7 +1804,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1069285658}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &732567209
 GameObject:
@@ -2508,6 +2515,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: abeb186619cc7e6419cb81e1e4dfa162, type: 3}
+--- !u!136 &1014117597 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 3576288450122217075, guid: e58a8494f35e17f45ba5bbffdfb92517,
+    type: 3}
+  m_PrefabInstance: {fileID: 1361707386}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1069285656
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2638,7 +2651,7 @@ PrefabInstance:
     - target: {fileID: 6925745739663848697, guid: abeb186619cc7e6419cb81e1e4dfa162,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.46
+      value: -9.86
       objectReference: {fileID: 0}
     - target: {fileID: 6925745739663848697, guid: abeb186619cc7e6419cb81e1e4dfa162,
         type: 3}
@@ -2798,10 +2811,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 0
   turnSpeed: 5
+  waypointDetectionRadius: 0
+  player: {fileID: 0}
+  waypointMask:
+    serializedVersion: 2
+    m_Bits: 0
   waypointTarget: {fileID: 551877080}
   destinationWaypoint: {fileID: 290645870}
   isAlert: 0
   isPatrolling: 1
+  isChasing: 0
+  _isReturningFromChase: 0
 --- !u!114 &1069285665
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3702,7 +3722,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 0.5640496, y: 1}
+    m_SensorSize: {x: 1.2625482, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -4629,12 +4649,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a2dff04d9be9704d8fe80d9531819d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 4
+  speed: 2
   turnSpeed: 5
+  waypointDetectionRadius: 10
+  player: {fileID: 1014117597}
+  waypointMask:
+    serializedVersion: 2
+    m_Bits: 2048
   waypointTarget: {fileID: 551877080}
   destinationWaypoint: {fileID: 290645870}
   isAlert: 0
   isPatrolling: 1
+  isChasing: 0
+  _isReturningFromChase: 0
 --- !u!114 &6925745739663848703
 MonoBehaviour:
   m_ObjectHideFlags: 0

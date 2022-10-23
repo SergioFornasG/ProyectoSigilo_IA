@@ -76,8 +76,9 @@ public class StateMachine : MonoBehaviour
             {
 
                 var movement = ghost.GetComponent<GhostMovement>();
+                var theirState = ghost.GetComponent<StateMachine>();
                 if(movement != null) movement.setDestinationWaypoint(waypointDestination);
-
+                theirState.SetState("alert");
             }
         }
     }
