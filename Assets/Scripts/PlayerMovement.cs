@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private int KeyCount = 0;
+    public GameObject Wall;
     public GameEnding gameEnding;
     public float hearRadius = 10f;
     private float originalHearRadius;
@@ -39,6 +41,9 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate ()
     {
+        if(KeyCount >= 3){
+            Destroy(Wall);
+        }
         float horizontal = Input.GetAxis ("Horizontal");
         float vertical = Input.GetAxis ("Vertical");
         
@@ -139,5 +144,12 @@ public class PlayerMovement : MonoBehaviour
         {
             gameEnding.CaughtPlayer();
         }
+        
+        if (collision.gameObject.tag == "Key")
+        {            KeyCount++;
+        }
+        
+            
+    
     }
 }
