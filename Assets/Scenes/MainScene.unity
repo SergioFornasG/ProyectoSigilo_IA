@@ -6434,7 +6434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d612c1d4184568349af1d3af0a4c0115, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alertRadius: 3
+  alertRadius: 8
   waypointMask:
     serializedVersion: 2
     m_Bits: 2048
@@ -6451,7 +6451,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5d20fe58d194b429d7946ff6196644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visionRadius: 7.99
+  visionRadius: 8.05
   alertRadius: 0
   visionAngle: 0
   playerMask:
@@ -23326,7 +23326,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.2625482, y: 1}
+    m_SensorSize: {x: 1.7777778, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -30626,7 +30626,7 @@ PrefabInstance:
     - target: {fileID: 8564044044513400644, guid: 3d8158841df6b824eb4a665f82a99938,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18
+      value: 21.58
       objectReference: {fileID: 0}
     - target: {fileID: 8564044044513400644, guid: 3d8158841df6b824eb4a665f82a99938,
         type: 3}
