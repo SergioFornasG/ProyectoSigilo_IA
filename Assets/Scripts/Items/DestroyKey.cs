@@ -12,8 +12,7 @@ public class DestroyKey : MonoBehaviour
     void OnCollisionEnter(Collision coll)
     {
         if (coll.gameObject.tag == "Player")
-        {
-            Destroy(key);
+        {            Destroy(key);
         }
         
             
