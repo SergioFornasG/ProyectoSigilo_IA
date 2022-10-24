@@ -230,7 +230,7 @@ public class GhostMovement : MonoBehaviour
 
     private IEnumerator AlertTimer()
     {
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(5f);
         stateMachine.SetState("returnFromAlert");
         _isOverwatching = false;
     }
