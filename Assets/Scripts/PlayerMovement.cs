@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-
+    public GameEnding gameEnding;
     public float hearRadius = 10f;
     private float originalHearRadius;
     [Range(0, 50)]
@@ -124,6 +124,21 @@ public class PlayerMovement : MonoBehaviour
             line.SetPosition(i, new Vector3(x, 0, y));
 
             angle += (360f / segments);
+        }
+    }
+
+    public float GetHearRadius()
+    {
+        return hearRadius;
+    }
+
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "Ghost")
+        {
+            Debug.Log("Choca");
+            gameEnding.CaughtPlayer();
         }
     }
 }

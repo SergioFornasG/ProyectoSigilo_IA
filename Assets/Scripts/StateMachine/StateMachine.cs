@@ -9,6 +9,7 @@ public class StateMachine : MonoBehaviour
     public LayerMask Ghost;
     public string state = "patrol";
     public bool seeked; // true si persigue al jugador
+    public float alertArea;
     //public Collider g_Collider;
     
     void Start()
@@ -69,7 +70,7 @@ public class StateMachine : MonoBehaviour
     //Crea una llamda de alerta hacia la posición waypointDestination alrededor del elemento que contiene este script
     public void alert(Collider waypointDestination){
              
-        ghostInsideZone = Physics.OverlapSphere(transform.position, 20,Ghost);
+        ghostInsideZone = Physics.OverlapSphere(transform.position, alertArea, Ghost);
         if(ghostInsideZone.Length >= 1)
         {
             foreach (var ghost in ghostInsideZone)

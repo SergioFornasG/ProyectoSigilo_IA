@@ -25,8 +25,8 @@ public class habitacionesHide : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
 
-            other.GetComponent<PlayerMovement>().changeHide();
-            Debug.Log("Escondido");
+            //other.GetComponent<PlayerMovement>().changeHide();
+            //Debug.Log("Escondido");
 
 
 
@@ -36,8 +36,8 @@ public class habitacionesHide : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
 
-            Debug.Log("Expuesto");
-            other.GetComponent<PlayerMovement>().changeHide();
+            //Debug.Log("Expuesto");
+            //other.GetComponent<PlayerMovement>().changeHide();
 
 
 
