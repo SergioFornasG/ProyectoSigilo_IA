@@ -72,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.LeftControl))
         {
             playerState = State.Run;
-            movementSpeed = 4f;
+            movementSpeed = 2f;
             hearRadius = originalHearRadius * 1.5f;
         }
         else if (Input.GetKey(KeyCode.LeftShift))
@@ -137,7 +137,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.tag == "Ghost")
         {
-            Debug.Log("Choca");
             gameEnding.CaughtPlayer();
         }
     }
