@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 [RequireComponent(typeof(LineRenderer))]
 
 public class PlayerMovement : MonoBehaviour
@@ -73,6 +75,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKey(KeyCode.R))
+        {
+            SceneManager.LoadScene(0);
+        }
         //DrawCirecle(100, 1);
         if (Input.GetKey(KeyCode.LeftControl))
         {
