@@ -203,7 +203,7 @@ public class GhostMovement : MonoBehaviour
         var direction = player.transform.position - transform.position;
         var rotation = Quaternion.LookRotation(direction);
 
-        if (Vector3.Distance(transform.position, player.transform.position) < 2f)
+        if (Vector3.Distance(transform.position, player.transform.position) < 1f)
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position, speed * Time.deltaTime);
         else
             transform.position = Vector3.MoveTowards(transform.position, player.transform.position + player.transform.forward * 2, speed * Time.deltaTime);
